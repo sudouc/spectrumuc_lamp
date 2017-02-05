@@ -1,9 +1,10 @@
 #!/bin/bash
-pip uninstall spectrumuc_lamp
-systemctl stop spectrumuc.service
-systemctl disable spectrumuc.service
-rm /lib/systemd/system/spectrumuc.service
-rm /lib/systemd/system/spectrumuc.service # symlinks?
+pip uninstall lamp
+systemctl stop lamp.service
+systemctl disable lamp.service
+rm /lib/systemd/system/lamp.service
+rm /lib/systemd/system/lamp.service # symlinks?
 systemctl daemon-reload
 systemctl reset-failed
 
+# TODO: What if systemd isn't installed, what can we do then?

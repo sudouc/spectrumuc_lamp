@@ -1,13 +1,20 @@
+#!/usr/bin/env python3
 """Setup module for spectrumuc_lamp on Raspberry Pi
 See:
 https://github.com/sudouc/spectrumuc_lamp
 """
+
+# TODO: Remove most unnecessary fluff from here
+
+raise NotImplementedError("""setup.py has not been fully tested, please just"""
+                          """ use run-lamp.py for now rather than installing""")
 
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 # To use a consistent encoding
 from codecs import open
+import re
 import os
 import sys
 from os import path
@@ -15,6 +22,12 @@ import shutil
 from subprocess import call
 
 here = path.abspath(path.dirname(__file__))
+
+version = re.search(
+    '^__version__\s*=\s*"(.*)"',
+    open('lamp/lamp.py').read(),
+    re.M
+    ).group(1)
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
@@ -27,6 +40,7 @@ class CustomInstallCommand(install):
             # Only try to install startup scripts on raspberry pi
             print("Setting up run-on startup service")
             try:
+                # TODO: What if we don't have systemd? we don't have it by default on wheezy
                 src_file = path.join(path.dirname(__file__), 'systemd/spectrumuc.service')
                 call(['cp', src_file, '/lib/systemd/system'])
                 call(['systemctl', 'enable', 'spectrumuc.service'])
@@ -37,22 +51,18 @@ class CustomInstallCommand(install):
         install.run(self)
 
 setup(
-    name='spectrumuc_lamp',
+    name='lamp',
 
-    # Versions should comply with PEP440.  For a discussion on single-sourcing
+    # TODO: Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.0.1',
+    version=version,
 
-    description='Python code for the control units of SpectrumUC, calls firebase backend',
+    description='Python code for the control units of Spectrum, calls firebase backend',
     long_description=long_description,
 
-    # The project's main homepage.
-    url='https://github.com/sudouc/spectrumuc_lamp',
-
     # Author details
-    author='UC Student Developer Organisation',
-    author_email='developers.uc@gmail.com',
+    author='Alisdair Robertson',
 
     # Choose your license
     license='MIT',
@@ -76,16 +86,12 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         # 'Programming Language :: Python :: 2',
         # 'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        # TODO, verify that it works in python 3 as well
+        # 'Programming Language :: Python :: 2.7',
         # 'Programming Language :: Python :: 3',
         # 'Programming Language :: Python :: 3.3',
         # 'Programming Language :: Python :: 3.4',
-        # 'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.5',
     ],
-
-    # What does your project relate to?
-    keywords='spectrumuc mood lighting colors',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().

@@ -1,0 +1,21 @@
+before_script:
+    - CHECKOUT_DIR="$(pwd)"
+    - whoami
+    - source ~/.bash_profile
+    - pyenv install -s 3.5.2
+    - pyenv virtualenvwrapper
+    - 'mktmpenv -q || :'
+    - cd "${CHECKOUT_DIR}"
+    - python -V
+    - which python
+    - pip install -r requirements.txt -qqq
+    - pip install -r requirements-dev.txt -qqq
+
+stages:
+    - run-tests
+
+nosetests:
+    stage: run-tests
+    environment: test
+    script:
+        - nosetests

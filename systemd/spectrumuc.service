@@ -1,12 +1,12 @@
 [Unit]
-Description=SpectrumUC Lamp Node
+Description=Lamp Node
 Before=runlevel2.target runlevel3.target runlevel4.target runlevel5.target
 After=network-online.target remote-fs.target systemd-journald-dev-log.socket
 Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/spectrumuc
+ExecStart=/usr/local/bin/run-lamp
 Restart=always
 
 [Install]

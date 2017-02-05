@@ -1,4 +1,4 @@
-SpectrumUC Lamp
+Lamp
 
 Python module to listen to a Firebase instance, and 
 issue commands based on the color value of the node.
@@ -8,3 +8,7 @@ issuing shell commands, and providing some form of CLI to manually control the n
 and/or edit the configuration file
 
 This is designed to run on top of OLA: https://www.openlighting.org/
+
+Not Yet Done:
+- Scripting to automate updating of the code on the lamps
+- sysvinit files & install script (unless we make systemd a requirement on the pi)
