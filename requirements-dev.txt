@@ -1,4 +1,3 @@
 nose
 coverage
 pylint
-mock

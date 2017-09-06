@@ -17,7 +17,8 @@ class Database(object):
     def __init__(self, config_file_path):
         """
         Create the database object
-        Unless a full path is provided, will look for firebase.cfg in the CWD
+
+        param config_file_path: path to the desired config file
         """
 
         if not config_file_path or not os.path.exists(config_file_path):
@@ -29,7 +30,7 @@ class Database(object):
         self.stop_heartbeat = False
         self.color = {}
 
-        self.config = configparser.ConfigParser()
+        self.config = configparser.ConfigParser() # todo move all of this out into the using module so we don't parse a config file here
         self.config.optionxform = str
         self.config_file_path = config_file_path
         self.config.read_file(open(self.config_file_path))
@@ -44,8 +45,7 @@ class Database(object):
         sys.stdout.flush()
 
         # Get the firebase configuration and init a connection
-        self.database = pyrebase.initialize_app(self.get_firebase_config()) 
-
+        self.database = pyrebase.initialize_app(self.get_firebase_config())
 
         auth = self.database.auth()
         self.user = auth.sign_in_with_email_and_password(*self.get_credentials())
@@ -90,7 +90,7 @@ class Database(object):
         )
 
     def spawn_heartbeat(self):
-        """Spawn and return a thread"""
+        """Spawn and return heartbeat thread"""
 
         hb_thread = Thread(target=self.heartbeat_task, args=(self.get_online_leaf(),))
         hb_thread.start()
